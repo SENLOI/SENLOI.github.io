@@ -1,267 +1,39 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>С днём рождения ❤️</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      height: 100%;
-      background: linear-gradient(135deg, #ff758c, #ff7eb3, #ff9ed3);
-      background-attachment: fixed;
-    }
-
-    body {
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: 'Arial', sans-serif;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      margin: 0;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.18);
-      padding: 40px 30px;
-      border-radius: 30px;
-      backdrop-filter: blur(15px);
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
-      max-width: 500px;
-      width: 100%;
-      margin: 20px auto;
-      border: 1px solid rgba(255,255,255,0.3);
-      animation: cardPop 1.2s ease-out;
-      max-height: 90vh;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(255,255,255,0.5) rgba(255,255,255,0.1);
-    }
-
-    .card::-webkit-scrollbar {
-      width: 6px;
-    }
-    .card::-webkit-scrollbar-track {
-      background: rgba(255,255,255,0.1);
-      border-radius: 10px;
-    }
-    .card::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,0.5);
-      border-radius: 10px;
-    }
-
-    @keyframes cardPop {
-      0% { transform: scale(0.8); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      text-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      line-height: 1.2;
-    }
-
-    p {
-      font-size: 1.25rem;
-      line-height: 1.6;
-      margin-bottom: 18px;
-      opacity: 0.96;
-    }
-
-    .signature {
-      font-style: italic;
-      font-size: 1.4rem;
-      margin-top: 30px;
-      opacity: 0.95;
-    }
-
-    .heart, .sparkle {
-      position: fixed;
-      pointer-events: none;
-      user-select: none;
-      will-change: transform, opacity;
-      z-index: 1000;
-    }
-
-    .heart {
-      text-shadow: 0 0 12px rgba(255, 45, 85, 0.5);
-    }
-
-    .sparkle {
-      text-shadow: 0 0 15px #fff;
-    }
-
-    /* Увеличенная длительность = замедление */
-    @keyframes floatHeart {
-      0% {
-        transform: translateY(-40vh) rotate(45deg) scale(0.6);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(110vh) rotate(45deg) scale(1.4);
-        opacity: 0;
-      }
-    }
-
-    @keyframes floatHeartDrift {
-      0% {
-        transform: translateY(-40vh) rotate(45deg) scale(0.6);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(110vh) rotate(45deg) scale(1.4) translateX(var(--drift, 0px));
-        opacity: 0;
-      }
-    }
-
-    @keyframes sparkleAnim {
-      0% { transform: translateY(-40vh) scale(0.5); opacity: 1; }
-      100% { transform: translateY(110vh) scale(1.8); opacity: 0; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .heart, .sparkle {
-        animation: none !important;
-        display: none;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Статичная нежная карточка -->
-  <div class="card">
-    <h1>С днём рождения,<br>моя любимая ❤️</h1>
-    <p>Ты — самое тёплое и светлое чудо в моей жизни… Когда я смотрю на тебя, сердце просто тает от нежности и счастья 🥰</p>
-    <p>С тобой даже самые обычные моменты становятся волшебными. А сегодня я хочу, чтобы ты чувствовала себя самой любимой и счастливой на всём свете.</p>
-    <p>Пусть твои глазки сияют, как звёздочки, а в душе было тепло, радостно и лёгко. Все твои мечты обязательно сбудутся, я в это верю ✨</p>
-    <p>Я так благодарен, что ты у меня есть. Люблю тебя очень-очень сильно и крепко обнимаю прямо сейчас 💕</p>
-    <div class="signature">Твой любимый, с безграничной любовью 🫶</div>
-  </div>
-
-  <script>
-    (function() {
-      "use strict";
-
-      const heartSymbols = ['❤', '♥', '❤'];
-      const heartColors = ['#ff2d55', '#ff4d94', '#ff69b4', '#ff1493', '#ff7eb3', '#ffb3d1', '#ff99cc', '#ff3366', '#ff80b3'];
-      const sparkleSymbols = ['✨', '🌸', '💫', '⭐', '🌟'];
-
-      function createHeart(options = {}) {
-        const heart = document.createElement('div');
-        heart.className = 'heart';
-        heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
-
-        const left = options.left !== undefined ? options.left : Math.random() * 100;
-        heart.style.left = left + 'vw';
-
-        const size = options.size || (Math.random() * 36 + 18);
-        heart.style.fontSize = size + 'px';
-
-        heart.style.color = heartColors[Math.floor(Math.random() * heartColors.length)];
-
-        // УВЕЛИЧЕННАЯ ДЛИТЕЛЬНОСТЬ (8–16 секунд) — падение медленнее
-        const duration = options.duration || (Math.random() * 8 + 8);
-        heart.style.animationDuration = duration + 's';
-
-        heart.style.animationDelay = (options.delay !== undefined ? options.delay : -Math.random() * 3.2) + 's';
-
-        const useDrift = options.useDrift !== undefined ? options.useDrift : (Math.random() > 0.6);
-        if (useDrift) {
-          const drift = (Math.random() * 70 - 35) + 'px';
-          heart.style.setProperty('--drift', drift);
-          heart.style.animationName = 'floatHeartDrift';
-        } else {
-          heart.style.animationName = 'floatHeart';
-        }
-
-        heart.style.animationTimingFunction = 'linear';
-        heart.style.animationFillMode = 'forwards';
-
-        document.body.appendChild(heart);
-
-        heart.addEventListener('animationend', () => {
-          if (heart.parentNode) heart.remove();
-        }, { once: true });
-
-        return heart;
-      }
-
-      function createSparkle() {
-        const sparkle = document.createElement('div');
-        sparkle.className = 'sparkle';
-        sparkle.textContent = sparkleSymbols[Math.floor(Math.random() * sparkleSymbols.length)];
-
-        sparkle.style.left = Math.random() * 100 + 'vw';
-        sparkle.style.fontSize = (Math.random() * 1.7 + 1.4) + 'rem';
-        // УВЕЛИЧЕННАЯ ДЛИТЕЛЬНОСТЬ БЛЁСТОК (8–16 секунд)
-        sparkle.style.animation = `sparkleAnim ${Math.random() * 8 + 8}s linear forwards`;
-
-        document.body.appendChild(sparkle);
-
-        sparkle.addEventListener('animationend', () => {
-          if (sparkle.parentNode) sparkle.remove();
-        }, { once: true });
-      }
-
-      function spawnHeartBurst(centerXPercent) {
-        // Количество сердечек при касании уменьшено вдвое (было 20, стало 10)
-        for (let i = 0; i < 10; i++) {
-          setTimeout(() => {
-            const left = Math.min(100, Math.max(0, centerXPercent + (Math.random() * 48 - 24)));
-            createHeart({
-              left: left,
-              size: Math.random() * 32 + 16,
-              duration: Math.random() * 8 + 8, // тоже замедленно
-              delay: 0,
-              useDrift: Math.random() > 0.5
-            });
-          }, i * 8);
-        }
-      }
-
-      function startEffects() {
-        // Частота создания сердечек уменьшена вдвое (было 68 мс, стало 136 мс)
-        setInterval(createHeart, 136);
-
-        // Начальный дождь уменьшен вдвое (было 55, стало 28)
-        for (let i = 0; i < 28; i++) {
-          setTimeout(createHeart, Math.random() * 1400);
-        }
-
-        // Частота блёсток уменьшена вдвое (было 210 мс, стало 420 мс)
-        setInterval(() => {
-          if (Math.random() > 0.38) createSparkle();
-        }, 420);
-
-        document.addEventListener('touchstart', (e) => {
-          const touch = e.touches[0];
-          if (!touch) return;
-          const touchXPercent = (touch.clientX / window.innerWidth) * 100;
-          spawnHeartBurst(touchXPercent);
-        }, { passive: true });
-
-        document.addEventListener('mousedown', (e) => {
-          const mouseXPercent = (e.clientX / window.innerWidth) * 100;
-          spawnHeartBurst(mouseXPercent);
-        });
-      }
-
-      window.addEventListener('load', startEffects);
-
-      console.log('%c❤️ Скорость и количество снижены на 50% ❤️', 'color:#ff2d55; font-size:16px; font-weight:bold');
-    })();
-  </script>
-</body>
-</html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Мой почерк</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f5f4f1;color:#1a1a1a;min-height:100vh}
+.app{max-width:720px;margin:0 auto;padding:2rem 1.5rem 4rem}
+h1{font-size:22px;font-weight:700;letter-spacing:-.3px}
+.subtitle{font-size:14px;color:#777;margin-top:2px;margin-bottom:1.75rem}
+.step{display:none}.step.active{display:block}
+.step-bar{display:flex;gap:5px;margin-bottom:1.5rem;align-items:center}
+.sd{height:6px;border-radius:3px;transition:all .25s ease}
+.sd.done{background:#1a1a1a;width:10px}.sd.on{background:#1a1a1a;width:26px}.sd.todo{background:#d5d3ce;width:6px}
+.card{background:white;border-radius:14px;border:1px solid #e8e6e0;padding:1.25rem 1.5rem;margin-bottom:14px}
+.tip{background:#f0ede7;border-radius:10px;padding:11px 15px;font-size:13px;color:#555;line-height:1.75;margin-bottom:14px}
+.tip b{color:#1a1a1a}.tip code{background:#e5e2db;border-radius:4px;padding:1px 5px;font-size:12px;font-family:monospace}
+.bp{background:#1a1a1a;color:#fff;border:none;border-radius:9px;padding:10px 22px;font-size:14px;cursor:pointer;font-family:inherit;font-weight:500;transition:opacity .15s;white-space:nowrap}
+.bp:hover{opacity:.8}.bp:disabled{opacity:.3;cursor:not-allowed}
+.bs{background:transparent;color:#666;border:1px solid #d0cec8;border-radius:9px;padding:9px 18px;font-size:13px;cursor:pointer;font-family:inherit;transition:background .1s;white-space:nowrap}
+.bs:hover{background:#eeece8}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+textarea,select,input[type=text],input[type=password]{border:1px solid #d8d5cf;border-radius:9px;font-family:inherit;background:white;color:#1a1a1a;outline:none;font-size:14px}
+textarea{width:100%;padding:12px;resize:vertical;line-height:1.65}
+select{padding:7px 11px}
+input[type=text],input[type=password]{padding:9px 12px;width:100%}
+.dz{border:1.5px dashed #c8c5be;border-radius:12px;padding:1.5rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s}
+.dz:hover,.dz.drag{border-color:#555;background:#f9f8f5}
+.dz-icon{font-size:28px;margin-bottom:6px;opacity:.45}
+.dz p{font-size:14px;color:#777}.dz .hint{font-size:12px;color:#aaa;margin-top:3px}
+.corner-dot{position:absolute;width:22px;height:22px;border-radius:50%;background:#d83a2a;border:2.5px solid white;cursor:crosshair;transform:translate(-50%,-50%);z-index:30;touch-action:none;box-shadow:0 1px 6px rgba(0,0,0,.4)}
+.chars-wrap{display:flex;flex-wrap:wrap;gap:3px;max-height:330px;overflow-y:auto;padding:8px;border:1px solid #e8e5df;border-radius:10px;background:#faf9f6}
+.ct{display:inline-flex;flex-direction:column;align-items:center;gap:1px;padding:2px 3px;border:1px solid #e5e3dd;border-radius:5px}
+.ct span{font-size:8px;color:#bbb;line-height:1}
+.lbl{font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:7px}
+.status{font-size:13px;color:#888;display:flex;align-items:center;gap:6px}
+.status.ok{color:#3a8a30}.status.err{color:#c03020}
