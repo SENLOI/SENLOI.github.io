@@ -3,414 +3,862 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Мой почерк</title>
+<title>Мой почерк v4</title>
 <style>
+:root{
+  --bg:#0d1520;--bg2:#162030;--bg3:#1f2d40;--bg4:#283a50;--bg5:#324860;
+  --ac:#3aa675;--ac2:#2d8060;--acd:rgba(58,166,117,.12);
+  --tx:#cdd5e0;--tx2:#7a90a8;--tx3:#4a6078;
+  --bd:#243448;--bd2:#2e4260;
+  --rd:#e05050;--am:#d99030;--bl:#4a90d9;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,-apple-system,sans-serif;background:#f5f4f1;color:#1a1a1a;min-height:100vh}
-.app{max-width:720px;margin:0 auto;padding:2rem 1.5rem 4rem}
-h1{font-size:22px;font-weight:700;letter-spacing:-.3px}
-.subtitle{font-size:14px;color:#777;margin-top:2px;margin-bottom:1.75rem}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;font-size:14px;line-height:1.5}
+.app{max-width:800px;margin:0 auto;padding:2rem 1.5rem 6rem}
+
+header{margin-bottom:2rem}
+.hrow{display:flex;align-items:center;gap:10px;margin-bottom:.2rem}
+h1{font-size:20px;font-weight:700;letter-spacing:-.4px}
+.vtag{font-size:10px;font-weight:700;background:var(--acd);color:var(--ac);border:1px solid rgba(58,166,117,.3);border-radius:5px;padding:2px 7px;letter-spacing:.05em}
+.sub{font-size:12px;color:var(--tx3)}
+
 .step{display:none}.step.active{display:block}
-.step-bar{display:flex;gap:5px;margin-bottom:1.5rem;align-items:center}
-.sd{height:6px;border-radius:3px;transition:all .25s ease}
-.sd.done{background:#1a1a1a;width:10px}.sd.on{background:#1a1a1a;width:26px}.sd.todo{background:#d5d3ce;width:6px}
-.card{background:white;border-radius:14px;border:1px solid #e8e6e0;padding:1.25rem 1.5rem;margin-bottom:14px}
-.tip{background:#f0ede7;border-radius:10px;padding:11px 15px;font-size:13px;color:#555;line-height:1.75;margin-bottom:14px}
-.tip b{color:#1a1a1a}.tip code{background:#e5e2db;border-radius:4px;padding:1px 5px;font-size:12px;font-family:monospace}
-.bp{background:#1a1a1a;color:#fff;border:none;border-radius:9px;padding:10px 22px;font-size:14px;cursor:pointer;font-family:inherit;font-weight:500;transition:opacity .15s;white-space:nowrap}
-.bp:hover{opacity:.8}.bp:disabled{opacity:.3;cursor:not-allowed}
-.bs{background:transparent;color:#666;border:1px solid #d0cec8;border-radius:9px;padding:9px 18px;font-size:13px;cursor:pointer;font-family:inherit;transition:background .1s;white-space:nowrap}
-.bs:hover{background:#eeece8}
+.sbar{display:flex;gap:4px;margin-bottom:1.75rem;align-items:center}
+.sd{height:3px;border-radius:2px;transition:all .35s cubic-bezier(.4,0,.2,1)}
+.sd.d{background:var(--ac2);width:12px}
+.sd.a{background:var(--ac);width:32px;box-shadow:0 0 8px rgba(58,166,117,.4)}
+.sd.t{background:var(--bg4);width:6px}
+.snum{font-size:11px;color:var(--tx3);margin-left:6px}
+
+.card{background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:14px}
+.card-flat{background:var(--bg3);border:1px solid var(--bd);border-radius:11px;padding:1rem 1.25rem;margin-bottom:10px}
+.tip{background:var(--bg3);border-left:3px solid var(--ac);border-radius:0 10px 10px 0;padding:10px 14px;font-size:13px;color:var(--tx2);line-height:1.75;margin-bottom:14px}
+.tip b{color:var(--tx)}.tip code{background:var(--bg4);border-radius:4px;padding:1px 6px;font-size:11px;font-family:monospace;color:var(--ac)}
+
+.bp{background:var(--ac);color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s,transform .08s,box-shadow .15s;white-space:nowrap}
+.bp:hover{background:#45bf88;box-shadow:0 0 12px rgba(58,166,117,.3)}.bp:active{transform:scale(.97)}.bp:disabled{opacity:.3;cursor:not-allowed}
+.bs{background:var(--bg3);color:var(--tx2);border:1px solid var(--bd);border-radius:8px;padding:8px 16px;font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+.bs:hover{background:var(--bg4);color:var(--tx);border-color:var(--bd2)}.bs:active{transform:scale(.97)}
+.bsi{background:transparent;color:var(--tx3);border:1px solid var(--bd);border-radius:7px;padding:6px 12px;font-size:12px;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+.bsi:hover{background:var(--bg3);color:var(--tx2);border-color:var(--bd2)}
+
 .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
-textarea,select,input[type=text],input[type=password]{border:1px solid #d8d5cf;border-radius:9px;font-family:inherit;background:white;color:#1a1a1a;outline:none;font-size:14px}
+textarea,select,input[type=text],input[type=password]{border:1px solid var(--bd);border-radius:8px;font-family:inherit;background:var(--bg3);color:var(--tx);outline:none;font-size:14px;transition:border-color .2s,background .2s}
 textarea{width:100%;padding:12px;resize:vertical;line-height:1.65}
-select{padding:7px 11px}
+textarea:focus,input:focus{border-color:var(--ac);background:var(--bg4)}
+select{padding:7px 10px;cursor:pointer;min-width:130px;color:var(--tx)}
+select option{background:var(--bg3)}
 input[type=text],input[type=password]{padding:9px 12px;width:100%}
-.dz{border:1.5px dashed #c8c5be;border-radius:12px;padding:1.5rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s}
-.dz:hover,.dz.drag{border-color:#555;background:#f9f8f5}
-.dz-icon{font-size:28px;margin-bottom:6px;opacity:.45}
-.dz p{font-size:14px;color:#777}.dz .hint{font-size:12px;color:#aaa;margin-top:3px}
-.corner-dot{position:absolute;width:22px;height:22px;border-radius:50%;background:#d83a2a;border:2.5px solid white;cursor:crosshair;transform:translate(-50%,-50%);z-index:30;touch-action:none;box-shadow:0 1px 6px rgba(0,0,0,.4)}
-.chars-wrap{display:flex;flex-wrap:wrap;gap:3px;max-height:330px;overflow-y:auto;padding:8px;border:1px solid #e8e5df;border-radius:10px;background:#faf9f6}
-.ct{display:inline-flex;flex-direction:column;align-items:center;gap:1px;padding:2px 3px;border:1px solid #e5e3dd;border-radius:5px}
-.ct span{font-size:8px;color:#bbb;line-height:1}
-.lbl{font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:7px}
-.status{font-size:13px;color:#888;display:flex;align-items:center;gap:6px}
-.status.ok{color:#3a8a30}.status.err{color:#c03020}
-.tabs{display:flex;gap:2px;margin-bottom:14px;background:#eeece8;border-radius:9px;padding:3px}
-.tab{flex:1;padding:8px;text-align:center;font-size:13px;border-radius:7px;cursor:pointer;color:#777;transition:all .15s}
-.tab.active{background:white;color:#1a1a1a;font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,.08)}
-input[type=range]{cursor:pointer;width:130px}
-.ctrl-row{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
-.ctrl-item label{font-size:12px;color:#888;display:block;margin-bottom:4px}
-.ctrl-item{display:flex;flex-direction:column}
+
+.dz{border:1.5px dashed var(--bd2);border-radius:12px;padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s}
+.dz:hover,.dz.drag{border-color:var(--ac);background:rgba(58,166,117,.04)}
+.dz.ok{border-color:var(--ac2);border-style:solid}
+.dz p{font-size:14px;color:var(--tx2)}.dz .hint{font-size:12px;color:var(--tx3);margin-top:3px}
+.dz-ico{font-size:24px;margin-bottom:6px;opacity:.5}
+
+.cdot{position:absolute;width:20px;height:20px;border-radius:50%;background:var(--rd);border:2.5px solid var(--bg);cursor:crosshair;transform:translate(-50%,-50%);z-index:30;touch-action:none;box-shadow:0 2px 10px rgba(0,0,0,.8);transition:width .1s,height .1s}
+.cdot:hover{width:24px;height:24px}
+
+.cgw{display:flex;flex-wrap:wrap;gap:2px;max-height:280px;overflow-y:auto;padding:8px;border:1px solid var(--bd);border-radius:10px;background:var(--bg)}
+.ct{display:inline-flex;flex-direction:column;align-items:center;gap:1px;padding:2px 3px;border:1px solid var(--bd);border-radius:5px;background:var(--bg2);cursor:pointer;transition:border-color .15s,background .15s}
+.ct:hover{border-color:var(--ac);background:var(--bg3)}
+.ct.ok{border-color:rgba(58,166,117,.35)}
+.ct span{font-size:7px;color:var(--tx3);line-height:1}
+
+.lbl{font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:7px}
+.sec{font-size:13px;color:var(--tx2);font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.sec::after{content:'';flex:1;height:1px;background:var(--bd)}
+
+.sta{font-size:12px;color:var(--tx2)}
+.sta.ok{color:var(--ac)}.sta.er{color:var(--rd)}.sta.wa{color:var(--am)}.sta.lo{color:var(--bl)}
+
+.tabs{display:flex;gap:2px;margin-bottom:14px;background:var(--bg);border-radius:10px;padding:3px;border:1px solid var(--bd)}
+.tab{flex:1;padding:8px;text-align:center;font-size:13px;border-radius:8px;cursor:pointer;color:var(--tx3);transition:all .15s;font-weight:500}
+.tab.on{background:var(--bg2);color:var(--tx);box-shadow:0 1px 4px rgba(0,0,0,.3)}
+
+input[type=range]{cursor:pointer;accent-color:var(--ac);height:4px;min-width:80px}
+.tog{position:relative;width:40px;height:22px;cursor:pointer;display:inline-block;flex-shrink:0}
+.tog input{position:absolute;opacity:0;width:0;height:0}
+.ttr{position:absolute;inset:0;background:var(--bg4);border-radius:11px;transition:background .2s;border:1px solid var(--bd2)}
+.tog input:checked+.ttr{background:var(--ac);border-color:var(--ac)}
+.tth{position:absolute;top:3px;left:3px;width:14px;height:14px;background:white;border-radius:50%;transition:left .2s;pointer-events:none;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.tog input:checked~.tth{left:20px}
+.togrow{display:flex;align-items:center;gap:9px}
+.toglab{font-size:13px;color:var(--tx2);min-width:28px}
+
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.ci label{font-size:10px;color:var(--tx3);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.07em}
+.cr{display:flex;align-items:center;gap:7px}
+.cr input[type=range]{flex:1;min-width:0}
+.crv{font-size:12px;color:var(--tx2);min-width:38px;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;font-family:monospace}
+
+.div{height:1px;background:var(--bd);margin:14px 0}
+
+.bigprev{display:none;margin-bottom:12px;background:var(--bg3);border:1px solid var(--bd);border-radius:10px;padding:12px;text-align:center}
+.bigprev canvas{border:1px solid var(--bd2);border-radius:6px;display:inline-block}
+.bigprev p{font-size:11px;color:var(--tx3);margin-top:6px}
+
+.pbox{position:relative;overflow:hidden;border-radius:10px;border:1px solid var(--bd);background:var(--bg);margin-top:14px}
+.pbox canvas{display:block;max-width:100%}
+.povr{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(13,21,32,.75);font-size:13px;color:var(--tx2);pointer-events:none;opacity:0;transition:opacity .2s;backdrop-filter:blur(2px)}
+.pbox.loading .povr{opacity:1}
+
+.metrow{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.met{background:var(--bg4);border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--tx2);font-family:monospace}
+.met b{color:var(--tx)}
+
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:2px}
+::-webkit-scrollbar-thumb:hover{background:var(--bg5)}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{display:inline-block;width:12px;height:12px;border:2px solid var(--bd2);border-top-color:var(--ac);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:5px}
 </style>
 </head>
 <body>
 <div class="app">
-  <h1>Мой почерк</h1>
-  <p class="subtitle">Печать любого текста вашим собственным подчерком — 5 простых шагов</p>
+<header>
+  <div class="hrow"><h1>Мой почерк</h1><span class="vtag">v4</span></div>
+  <p class="sub">Персональный движок рукописного текста · перспективная коррекция · связное письмо · керниг · экспорт PDF</p>
+</header>
 
-  <div class="step-bar" id="sdots">
-    <div class="sd on"></div>
-    <div class="sd todo"></div>
-    <div class="sd todo"></div>
-    <div class="sd todo"></div>
-    <div class="sd todo"></div>
-  </div>
-
-  <!-- ── STEP 0 ── -->
-  <div class="step active" id="s0">
-    <span class="lbl">Шаг 1 — Шаблон букв</span>
-    <div class="tip">
-      Нажмите <b>«Распечатать шаблон»</b> — откроется страница для печати.<br>
-      Напишите <b>каждую букву своим почерком</b> в соответствующей ячейке.<br>
-      Сфотографируйте заполненный лист <b>строго сверху</b>, без наклона, при хорошем равномерном освещении.<br>
-      Не перекрывайте <b style="color:#d83a2a">красные метки</b> по углам сетки — они нужны для точного выравнивания.
-    </div>
-    <div class="card" style="padding:.75rem;overflow:auto">
-      <canvas id="tc" style="max-width:100%;display:block;border-radius:6px"></canvas>
-    </div>
-    <div class="row">
-      <button class="bp" onclick="printTmpl()">Распечатать шаблон</button>
-      <button class="bs" onclick="go(1)">Шаблон заполнен →</button>
-    </div>
-  </div>
-
-  <!-- ── STEP 1 ── -->
-  <div class="step" id="s1">
-    <span class="lbl">Шаг 2 — Загрузите фото шаблона и выровняйте углы</span>
-    <div class="tip">
-      Загрузите фото заполненного шаблона.<br>
-      Перетащите <b style="color:#d83a2a">4 красные точки</b> точно на красные метки в углах сетки.<br>
-      Порядок: <code>↖</code> верхний-левый → <code>↗</code> верхний-правый → <code>↘</code> нижний-правый → <code>↙</code> нижний-левый.
-    </div>
-    <div class="dz" id="dz1" onclick="document.getElementById('hf1').click()">
-      <input type="file" id="hf1" accept="image/*" style="display:none">
-      <div class="dz-icon">📷</div>
-      <p id="dz1lbl">Нажмите или перетащите фото шаблона</p>
-      <p class="hint">JPG, PNG, HEIC, WEBP</p>
-    </div>
-    <div id="abox" style="display:none;margin-bottom:12px;overflow:auto">
-      <div id="pwrap" style="position:relative;display:inline-block;max-width:100%;overflow:visible">
-        <canvas id="pc" style="display:block;border-radius:8px;max-width:100%"></canvas>
-        <div id="dl" style="position:absolute;top:0;left:0;pointer-events:none"></div>
-      </div>
-    </div>
-    <div class="row">
-      <button class="bs" onclick="go(0)">← Назад</button>
-      <button class="bp" id="extbtn" disabled onclick="doExtract()">Извлечь буквы →</button>
-      <span class="status" id="exst"></span>
-    </div>
-  </div>
-
-  <!-- ── STEP 2 ── -->
-  <div class="step" id="s2">
-    <span class="lbl">Шаг 3 — Проверьте извлечённые символы</span>
-    <div class="tip">
-      Убедитесь, что каждая буква чётко видна. Если символы смещены или размыты — вернитесь и скорректируйте красные точки выравнивания.
-    </div>
-    <div id="cgrid" class="chars-wrap" style="margin-bottom:14px"></div>
-    <div class="row">
-      <button class="bs" onclick="go(1)">← Исправить</button>
-      <button class="bp" onclick="go(3)">Буквы верны →</button>
-    </div>
-  </div>
-
-  <!-- ── STEP 3 — TEXT SOURCE ── -->
-  <div class="step" id="s3">
-    <span class="lbl">Шаг 4 — Текст для печати</span>
-    <div class="tabs">
-      <div class="tab active" id="tab0" onclick="switchTab(0)">Ввести вручную</div>
-      <div class="tab" id="tab1" onclick="switchTab(1)">Распознать фото лекции (AI)</div>
-    </div>
-
-    <div id="pane0">
-      <textarea id="txtin" placeholder="Вставьте или введите текст лекции..." rows="9"></textarea>
-      <div class="row">
-        <button class="bs" onclick="go(2)">← Назад</button>
-        <button class="bp" onclick="goRender()">Далее →</button>
-      </div>
-    </div>
-
-    <div id="pane1" style="display:none">
-      <div class="tip">
-        Для распознавания нужен API-ключ Anthropic. Получите бесплатно на <b>console.anthropic.com</b>.
-      </div>
-      <div class="card">
-        <span class="lbl">API-ключ Anthropic</span>
-        <div style="display:flex;gap:8px">
-          <input type="password" id="apikey" placeholder="sk-ant-..." autocomplete="off" style="flex:1;font-family:monospace;font-size:12px">
-          <button class="bs" onclick="saveKey()">Сохранить</button>
-        </div>
-        <p style="font-size:11px;color:#aaa;margin-top:6px">Ключ хранится только в вашем браузере</p>
-      </div>
-      <div class="dz" id="dz2" onclick="document.getElementById('hf2').click()">
-        <input type="file" id="hf2" accept="image/*" style="display:none">
-        <div class="dz-icon">📄</div>
-        <p id="dz2lbl">Загрузите фото страницы лекции</p>
-        <p class="hint">Claude распознает весь текст</p>
-      </div>
-      <div id="ocrpreview" style="display:none;margin-bottom:10px">
-        <img id="ocrimg" style="max-height:160px;border-radius:8px;border:1px solid #e8e5df;display:block">
-      </div>
-      <div class="row">
-        <button class="bp" id="ocrbtn" onclick="doOCR()">Распознать текст</button>
-        <span class="status" id="ocrst"></span>
-      </div>
-      <div id="ocrresult" style="display:none;margin-top:14px">
-        <span class="lbl">Распознанный текст (можно редактировать)</span>
-        <textarea id="ocrtxt" rows="9" style="margin-bottom:10px"></textarea>
-        <div class="row">
-          <button class="bs" onclick="go(2)">← Назад</button>
-          <button class="bp" onclick="useOCR()">Использовать этот текст →</button>
-        </div>
-      </div>
-      <div class="row" id="ocrback">
-        <button class="bs" onclick="go(2)">← Назад</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── STEP 4 — RENDER ── -->
-  <div class="step" id="s4">
-    <span class="lbl">Шаг 5 — Настройки и печать</span>
-    <div class="card">
-      <div class="ctrl-row">
-        <div class="ctrl-item">
-          <label>Размер букв</label>
-          <div style="display:flex;align-items:center;gap:7px">
-            <input type="range" min=".4" max="2.2" step=".1" value="1" id="szsl">
-            <span id="szlbl" style="font-size:13px;color:#666;min-width:28px">1.0×</span>
-          </div>
-        </div>
-        <div class="ctrl-item">
-          <label>Межбуквенный</label>
-          <div style="display:flex;align-items:center;gap:7px">
-            <input type="range" min=".5" max="1.5" step=".05" value="1" id="spsl">
-            <span id="splbl" style="font-size:13px;color:#666;min-width:28px">1.0×</span>
-          </div>
-        </div>
-        <div class="ctrl-item">
-          <label>Дрожание почерка</label>
-          <div style="display:flex;align-items:center;gap:7px">
-            <input type="range" min="0" max=".12" step=".01" value=".04" id="jitsl">
-            <span id="jitlbl" style="font-size:13px;color:#666;min-width:40px">средний</span>
-          </div>
-        </div>
-        <div class="ctrl-item">
-          <label>Фон страницы</label>
-          <select id="bgsel">
-            <option value="w">Чистый белый</option>
-            <option value="r">В линейку</option>
-            <option value="g">В клетку</option>
-            <option value="y">Жёлтый (блокнот)</option>
-          </select>
-        </div>
-        <div class="ctrl-item">
-          <label>Цвет чернил</label>
-          <select id="inksel">
-            <option value="orig">С фото (оригинал)</option>
-            <option value="blue">Синяя ручка</option>
-            <option value="black">Чёрная ручка</option>
-          </select>
-        </div>
-      </div>
-      <div class="row">
-        <button class="bp" onclick="doRender()">Создать рукопись</button>
-        <button class="bs" onclick="go(3)">← Изменить текст</button>
-      </div>
-    </div>
-
-    <div id="rbox" style="display:none">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <span class="lbl" style="margin:0">Результат</span>
-        <div style="display:flex;gap:8px">
-          <button class="bs" onclick="doDownload()">Скачать PNG</button>
-          <button class="bp" onclick="doPrint()">Печать →</button>
-        </div>
-      </div>
-      <canvas id="outc" style="border:1px solid #e8e5df;border-radius:10px;max-width:100%;display:block;box-shadow:0 2px 14px rgba(0,0,0,.07)"></canvas>
-    </div>
-  </div>
-
+<div class="sbar" id="sbar">
+  <div class="sd a"></div><div class="sd t"></div><div class="sd t"></div><div class="sd t"></div><div class="sd t"></div>
+  <span class="snum" id="snum">1 / 5</span>
 </div>
 
+<!-- ═══════════ STEP 0 ═══════════ -->
+<div class="step active" id="s0">
+  <span class="lbl">Шаг 1 — Шаблон для почерка</span>
+  <div class="tip">
+    Распечатайте шаблон и напишите <b>каждую букву своим почерком</b> в ячейке.<br>
+    Пишите <b>крупно</b>, не выходя за края. Базовая линия в ячейке — ориентир для написания.<br>
+    <b>Не перекрывайте</b> красные угловые метки. Фото делайте <b>строго сверху</b>, без теней.
+  </div>
+  <div class="card" style="padding:.75rem;overflow-x:auto">
+    <canvas id="tc" style="max-width:100%;display:block;border-radius:6px"></canvas>
+  </div>
+  <div class="row">
+    <button class="bp" onclick="printTmpl()">Распечатать шаблон</button>
+    <button class="bs" onclick="go(1)">Шаблон заполнен →</button>
+  </div>
+</div>
+
+<!-- ═══════════ STEP 1 ═══════════ -->
+<div class="step" id="s1">
+  <span class="lbl">Шаг 2 — Загрузка фото и выравнивание</span>
+  <div class="tip">
+    Загрузите фото заполненного шаблона.<br>
+    Тяните <b style="color:var(--rd)">4 красные точки</b> точно на красные метки в углах сетки: <b>↖ ↗ ↘ ↙</b><br>
+    Точность выравнивания = качество извлечения букв.
+  </div>
+  <div class="dz" id="dz1" onclick="document.getElementById('hf1').click()">
+    <input type="file" id="hf1" accept="image/*" style="display:none">
+    <div class="dz-ico">📷</div>
+    <p id="dz1l">Нажмите или перетащите фото шаблона</p>
+    <p class="hint">JPG · PNG · HEIC · WEBP</p>
+  </div>
+  <div id="abox" style="display:none;margin-bottom:12px;overflow:auto">
+    <div id="pw" style="position:relative;display:inline-block;max-width:100%;overflow:visible">
+      <canvas id="pc" style="display:block;border-radius:8px;max-width:100%;border:1px solid var(--bd)"></canvas>
+      <div id="dl" style="position:absolute;top:0;left:0;pointer-events:none"></div>
+    </div>
+    <p style="font-size:11px;color:var(--tx3);margin-top:6px">Красные точки можно тянуть — они начинают двигаться сразу при касании</p>
+  </div>
+  <div class="row">
+    <button class="bs" onclick="go(0)">← Назад</button>
+    <button class="bp" id="extbtn" disabled onclick="doExtract()">Извлечь символы →</button>
+    <span class="sta" id="exst"></span>
+  </div>
+</div>
+
+<!-- ═══════════ STEP 2 ═══════════ -->
+<div class="step" id="s2">
+  <span class="lbl">Шаг 3 — Проверка символов</span>
+  <div class="tip">
+    Каждая буква должна быть <b>чёткой, не обрезанной и без соседних букв</b>.<br>
+    Нажмите на символ для просмотра крупно. Если плохо — вернитесь и сдвиньте точки выравнивания.
+  </div>
+  <div id="cgrid" class="cgw" style="margin-bottom:10px"></div>
+  <div class="bigprev" id="bigprev">
+    <canvas id="bigc"></canvas>
+    <p id="biglbl"></p>
+  </div>
+  <div id="metrow" class="metrow" style="margin-bottom:12px"></div>
+  <div class="row">
+    <button class="bs" onclick="go(1)">← Исправить</button>
+    <button class="bp" onclick="go(3)">Всё верно →</button>
+  </div>
+</div>
+
+<!-- ═══════════ STEP 3 ═══════════ -->
+<div class="step" id="s3">
+  <span class="lbl">Шаг 4 — Источник текста</span>
+  <div class="tabs">
+    <div class="tab on" id="t0" onclick="stab(0)">Ввести вручную</div>
+    <div class="tab" id="t1" onclick="stab(1)">Распознать фото (AI)</div>
+  </div>
+
+  <div id="p0">
+    <textarea id="txin" placeholder="Вставьте или введите текст лекции..." rows="10" oninput="txStat()"></textarea>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:8px">
+      <span class="sta" id="txst"></span>
+      <div class="row" style="margin:0">
+        <button class="bs" onclick="go(2)">← Назад</button>
+        <button class="bp" onclick="goR()">Далее →</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="p1" style="display:none">
+    <div class="card-flat">
+      <span class="lbl">API-ключ Anthropic (claude.ai Vision)</span>
+      <div style="display:flex;gap:8px;margin-bottom:6px">
+        <input type="password" id="akey" placeholder="sk-ant-api03-..." autocomplete="off" style="flex:1;font-family:monospace;font-size:12px">
+        <button class="bs" onclick="saveKey()">Сохранить</button>
+      </div>
+      <p style="font-size:11px;color:var(--tx3)">Хранится в localStorage браузера · console.anthropic.com → API Keys</p>
+    </div>
+    <div class="dz" id="dz2" onclick="document.getElementById('hf2').click()">
+      <input type="file" id="hf2" accept="image/*" style="display:none">
+      <div class="dz-ico">📄</div>
+      <p id="dz2l">Загрузите фото страницы лекции</p>
+      <p class="hint">Claude распознаёт рукописный и печатный текст</p>
+    </div>
+    <div id="opv" style="display:none;margin-bottom:10px">
+      <img id="oimg" style="max-height:130px;border-radius:8px;border:1px solid var(--bd);display:block">
+    </div>
+    <div class="row" style="margin-bottom:10px">
+      <button class="bp" id="obtn" onclick="doOCR()">Распознать текст</button>
+      <span class="sta" id="ost"></span>
+    </div>
+    <div id="ores" style="display:none">
+      <span class="lbl">Распознанный текст (можно редактировать)</span>
+      <textarea id="otxt" rows="9" style="margin-bottom:10px" oninput="txStat2()"></textarea>
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <span class="sta" id="otxst"></span>
+        <div class="row" style="margin:0">
+          <button class="bs" onclick="go(2)">← Назад</button>
+          <button class="bp" onclick="useOCR()">Использовать →</button>
+        </div>
+      </div>
+    </div>
+    <div id="oback" class="row"><button class="bs" onclick="go(2)">← Назад</button></div>
+  </div>
+</div>
+
+<!-- ═══════════ STEP 4 ═══════════ -->
+<div class="step" id="s4">
+  <span class="lbl">Шаг 5 — Настройки рендера и экспорт</span>
+
+  <div class="card">
+    <span class="sec">Параметры письма</span>
+    <div class="cgrid">
+      <div class="ci"><label>Размер букв</label><div class="cr"><input type="range" min=".25" max="3" step=".05" value="1" id="szsl" oninput="syncLb();lr()"><span class="crv" id="szlb">1.00×</span></div></div>
+      <div class="ci"><label>Межбуквенный</label><div class="cr"><input type="range" min=".3" max="2.2" step=".05" value="1" id="spsl" oninput="syncLb();lr()"><span class="crv" id="splb">1.00×</span></div></div>
+      <div class="ci"><label>Межстрочный</label><div class="cr"><input type="range" min="1" max="3.5" step=".05" value="1.65" id="lhsl" oninput="syncLb();lr()"><span class="crv" id="lhlb">1.65×</span></div></div>
+      <div class="ci"><label>Наклон</label><div class="cr"><input type="range" min="-.4" max=".4" step=".01" value="0" id="slsl" oninput="syncLb();lr()"><span class="crv" id="sllb">0°</span></div></div>
+      <div class="ci"><label>Дрожание</label><div class="cr"><input type="range" min="0" max="1" step=".05" value=".3" id="jtsl" oninput="syncLb();lr()"><span class="crv" id="jtlb">0.30</span></div></div>
+      <div class="ci"><label>Давление пера</label><div class="cr"><input type="range" min=".2" max="1.6" step=".05" value=".85" id="prsl" oninput="syncLb();lr()"><span class="crv" id="prlb">0.85</span></div></div>
+      <div class="ci"><label>Отступ абзаца</label>
+        <select id="indsl" onchange="lr()">
+          <option value="0">Нет</option><option value="1" selected>1 симв.</option>
+          <option value="2">2 симв.</option><option value="3">3 симв.</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="div"></div>
+    <span class="sec">Связное письмо</span>
+    <div class="cgrid">
+      <div class="ci">
+        <label>Режим</label>
+        <div class="togrow">
+          <label class="tog"><input type="checkbox" id="ctog" onchange="togConn();lr()"><div class="ttr"></div><div class="tth"></div></label>
+          <span class="toglab" id="clb">Выкл</span>
+        </div>
+      </div>
+      <div class="ci" id="cw1" style="opacity:.3;pointer-events:none">
+        <label>Сила соединения</label>
+        <div class="cr"><input type="range" min=".05" max="1" step=".05" value=".55" id="cssl" oninput="syncLb();lr()"><span class="crv" id="cslb">0.55</span></div>
+      </div>
+      <div class="ci" id="cw2" style="opacity:.3;pointer-events:none">
+        <label>Изгиб дуги</label>
+        <div class="cr"><input type="range" min="-.6" max=".6" step=".05" value="-.15" id="casl" oninput="syncLb();lr()"><span class="crv" id="calb">-0.15</span></div>
+      </div>
+      <div class="ci" id="cw3" style="opacity:.3;pointer-events:none">
+        <label>Толщина связки</label>
+        <div class="cr"><input type="range" min=".3" max="2" step=".1" value=".8" id="ctsl" oninput="syncLb();lr()"><span class="crv" id="ctlb">0.80</span></div>
+      </div>
+    </div>
+
+    <div class="div"></div>
+    <span class="sec">Регистры и страница</span>
+    <div class="cgrid">
+      <div class="ci">
+        <label>Линии регистра</label>
+        <div class="togrow">
+          <label class="tog"><input type="checkbox" id="gtog" onchange="togGuide();lr()"><div class="ttr"></div><div class="tth"></div></label>
+          <span class="toglab" id="glb">Выкл</span>
+        </div>
+      </div>
+      <div class="ci">
+        <label>Режим регистров</label>
+        <select id="grsl" onchange="lr()">
+          <option value="baseline">Только baseline</option>
+          <option value="xheight">Baseline + x-height</option>
+          <option value="full" selected>Полный (4 линии)</option>
+          <option value="notebook">Тетрадь (узкий)</option>
+        </select>
+      </div>
+      <div class="ci">
+        <label>Фон страницы</label>
+        <select id="bgsl" onchange="lr()">
+          <option value="white">Чистый белый</option>
+          <option value="cream" selected>Крем (бумага)</option>
+          <option value="ruled">В линейку</option>
+          <option value="grid">В клетку</option>
+          <option value="notebook">Тетрадь</option>
+          <option value="dark">Тёмный</option>
+        </select>
+      </div>
+      <div class="ci">
+        <label>Цвет чернил</label>
+        <select id="iksl" onchange="lr()">
+          <option value="orig">С фото (оригинал)</option>
+          <option value="blue">Синяя ручка</option>
+          <option value="darkblue">Тёмно-синяя</option>
+          <option value="black">Чёрная</option>
+          <option value="pencil">Карандаш (серый)</option>
+          <option value="green">Зелёная</option>
+          <option value="red">Красная</option>
+          <option value="white">Белая (на тёмном)</option>
+        </select>
+      </div>
+      <div class="ci">
+        <label>Ширина страницы</label>
+        <select id="pwsl" onchange="lr()">
+          <option value="794">A4 (794px)</option>
+          <option value="1123">A4 @150% (1123)</option>
+          <option value="660">Узкая (660px)</option>
+          <option value="1200">Широкая (1200px)</option>
+        </select>
+      </div>
+      <div class="ci">
+        <label>Поля страницы</label>
+        <select id="msl" onchange="lr()">
+          <option value="48">Малые (48px)</option>
+          <option value="64" selected>Средние (64px)</option>
+          <option value="90">Большие (90px)</option>
+          <option value="120">Очень большие</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:16px">
+      <button class="bp" id="rndbtn" onclick="doRender()">Создать рукопись</button>
+      <button class="bs" onclick="go(3)">← Изменить текст</button>
+      <span class="sta" id="rnds"></span>
+    </div>
+  </div>
+
+  <div id="rbox" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+      <div>
+        <span class="lbl" style="margin:0;display:inline">Результат</span>
+        <span class="sta ok" id="rstat" style="margin-left:8px"></span>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="bsi" id="xpngbtn" onclick="xPNG()">↓ PNG</button>
+        <button class="bsi" id="xpdfbtn" onclick="xPDF()">↓ PDF</button>
+        <button class="bsi" onclick="xLong()">↓ Длинный PNG</button>
+        <button class="bp" style="padding:8px 18px" onclick="xPrint()">Печать →</button>
+      </div>
+    </div>
+    <div class="pbox" id="pbox">
+      <canvas id="outc" style="display:block;max-width:100%"></canvas>
+      <div class="povr" id="povr">Обновляю…</div>
+    </div>
+  </div>
+</div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-// ─── CONFIG ───
-const COLS = 11;
-const CW = 58, CH = 66, GAP = 4, SX = CW+GAP, SY = CH+GAP, MX = 16, MY = 46;
+const COLS=11,CW=60,CH=72,GAP=4,SX=CW+GAP,SY=CH+GAP,MX=18,MY=54,SS=2;
+const CHARS='АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюяABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?:;-—()«»"\' ';
+const NR=Math.ceil(CHARS.length/COLS);
+const TW=MX*2+COLS*SX-GAP, TH=MY+NR*SY-GAP+24;
+const GX0=MX,GY0=MY,GX1=MX+COLS*SX-GAP,GY1=MY+NR*SY-GAP;
 
-const CHARS =
-  'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя' +
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' +
-  '0123456789.,!?:;-()«»"\' ';
+const KERN={
+  'ТА':-.09,'ТО':-.07,'ТЕ':-.07,'ТЯ':-.07,'ТУ':-.06,'ТЫ':-.05,'ТИ':-.05,
+  'АВ':-.05,'ВА':-.04,'АТ':-.07,'ЛА':-.06,'ЛО':-.06,'ЛЕ':-.05,
+  'РА':-.05,'РО':-.04,'УА':-.04,
+  'TA':-.12,'TO':-.10,'TE':-.10,'TY':-.10,'AV':-.12,'VA':-.12,
+  'WA':-.10,'WO':-.08,'YA':-.10,'YO':-.08,
+  'fa':-.04,'fi':-.04,'ff':-.02,'fj':-.04,
+  'rn':-.03,'ri':-.02,'ry':-.03,'rv':-.02,
+  'ij':-.02,'ji':-.02,'lt':-.02,
+};
 
-const NR = Math.ceil(CHARS.length / COLS);
-const TW = MX*2 + COLS*SX - GAP, TH = MY + NR*SY - GAP + 20;
-const GX0 = MX, GY0 = MY, GX1 = MX+COLS*SX-GAP, GY1 = MY+NR*SY-GAP;
+const BLR=.76;
+let sImg=null,cMap={},cMeta={},cDots=[],oB64=null,oType='image/jpeg',fTxt='';
+let rTimer=null,lastH=820,lastSeed=0;
 
-let sImg = null, charMap = {}, cDots = [];
-let ocrB64 = null, ocrType = 'image/jpeg', finalText = '';
-
-// ─── NAV ───
-function go(n){
-  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
-  document.getElementById('s'+n).classList.add('active');
-  document.querySelectorAll('#sdots .sd').forEach((d,i)=>{
-    d.className = 'sd '+(i<n?'done':i===n?'on':'todo');
-  });
-  window.scrollTo({top:0,behavior:'smooth'});
+function prng(s){let x=Math.sin(s+1)*43758.5453;return x-Math.floor(x);}
+function nz(x,y){
+  const ix=Math.floor(x),iy=Math.floor(y),fx=x-ix,fy=y-iy;
+  const u=fx*fx*(3-2*fx),v=fy*fy*(3-2*fy);
+  const a=prng(ix+iy*57),b=prng(ix+1+iy*57),c=prng(ix+(iy+1)*57),d=prng(ix+1+(iy+1)*57);
+  return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v;
 }
-function goRender(){ finalText = document.getElementById('txtin').value; go(4); }
+function nz2(x,y){return nz(x,y)*2-1;}
 
-function switchTab(n){
-  [0,1].forEach(i=>{
-    document.getElementById('tab'+i).className='tab'+(i===n?' active':'');
-    document.getElementById('pane'+i).style.display=i===n?'block':'none';
-  });
-}
+const engine={
+  extractMetrics(canvas){
+    const w=canvas.width,h=canvas.height;
+    const px=canvas.getContext('2d').getImageData(0,0,w,h).data;
+    let x0=w,x1=0,y0=h,y1=0;
+    const rw=new Float32Array(h),cw2=new Float32Array(w);
+    for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+      const a=px[(y*w+x)*4+3];
+      if(a>40){
+        if(x<x0)x0=x;if(x>x1)x1=x;
+        if(y<y0)y0=y;if(y>y1)y1=y;
+        rw[y]+=a;cw2[x]+=a;
+      }
+    }
+    if(x0>=x1){
+      return{x0:w*.1,x1:w*.9,y0:h*.05,y1:h*.95,bl:Math.round(h*BLR),
+             xh:Math.round(h*.42),asc:Math.round(h*.05),dsc:Math.round(h*.95),
+             ex:w*.85,ey:h*BLR,enx:w*.1,eny:h*BLR,
+             ir:25,ig:25,ib:155,advance:w*.62,empty:true};
+    }
+    let bl=y0+Math.round((y1-y0)*BLR),blV=0;
+    for(let y=Math.round(y0+(y1-y0)*.4);y<=y1;y++){if(rw[y]>blV){blV=rw[y];bl=y;}}
+    let xh=y0+Math.round((y1-y0)*.42),xhV=0;
+    for(let y=y0;y<bl-2;y++){if(rw[y]>xhV){xhV=rw[y];xh=y;}}
+    let rs=0,gs=0,bs=0,cn=0;
+    for(let y=y0;y<=y1;y+=2)for(let x=x0;x<=x1;x+=2){
+      const i=(y*w+x)*4;if(px[i+3]>80){rs+=px[i];gs+=px[i+1];bs+=px[i+2];cn++;}
+    }
+    if(!cn){rs=25;gs=25;bs=155;cn=1;}
+    let ex=x1,ey=bl,enx=x0,eny=bl;
+    for(let y=Math.max(bl-Math.round((bl-y0)*.25),y0);y<=Math.min(bl+4,y1);y++){
+      for(let x=x1;x>=x0;x--){if(px[(y*w+x)*4+3]>55){if(x>=ex){ex=x;ey=y;}break;}}
+      for(let x=x0;x<=x1;x++){if(px[(y*w+x)*4+3]>55){if(x<=enx||enx===x0){enx=x;eny=y;}break;}}
+    }
+    const rawAdv=x1-x0;
+    return{
+      x0,x1,y0,y1,bl,xh,asc:y0,dsc:y1,
+      ex,ey,enx,eny,
+      ir:rs/cn|0,ig:gs/cn|0,ib:bs/cn|0,
+      advance:Math.max(rawAdv*.55,rawAdv*.82),
+      empty:false
+    };
+  },
 
-// ─── TEMPLATE ───
-(function(){
-  const c = document.getElementById('tc');
-  c.width=TW; c.height=TH;
-  const ctx = c.getContext('2d');
-  ctx.fillStyle='white'; ctx.fillRect(0,0,TW,TH);
-  ctx.fillStyle='#333'; ctx.font='bold 11px system-ui,sans-serif';
-  ctx.fillText('МОЙ ПОЧЕРК — напишите каждую букву своим почерком в ячейку', MX, 30);
+  ink(m,mode,a=1){
+    const alpha=Math.min(1,Math.max(0,a));
+    switch(mode){
+      case'blue':     return`rgba(22,58,210,${alpha})`;
+      case'darkblue': return`rgba(10,28,120,${alpha})`;
+      case'black':    return`rgba(8,8,12,${alpha})`;
+      case'pencil':   return`rgba(78,78,88,${(.55+alpha*.42).toFixed(2)})`;
+      case'green':    return`rgba(20,128,55,${alpha})`;
+      case'red':      return`rgba(188,28,28,${alpha})`;
+      case'white':    return`rgba(235,240,252,${alpha})`;
+      default:        return`rgba(${m.ir},${m.ig},${m.ib},${alpha})`;
+    }
+  },
+
+  tint(src,mode,pres,w,h){
+    if(mode==='orig')return null;
+    const off=document.createElement('canvas');off.width=w;off.height=h;
+    const oc=off.getContext('2d');
+    oc.drawImage(src,0,0,w,h);
+    oc.globalCompositeOperation='source-atop';
+    oc.fillStyle=engine.ink({ir:25,ig:25,ib:155},mode,pres);
+    oc.fillRect(0,0,w,h);
+    return off;
+  },
+
+  drawGuideMode(ctx,lx,rx,ty,cH,mode){
+    const configs={
+      baseline:[
+        {r:BLR,c:'rgba(58,166,117,.55)',dash:[],lw:.9}
+      ],
+      xheight:[
+        {r:.42,c:'rgba(58,166,117,.2)',dash:[5,8],lw:.65},
+        {r:BLR,c:'rgba(58,166,117,.55)',dash:[],lw:.9}
+      ],
+      full:[
+        {r:.05,c:'rgba(80,150,220,.12)',dash:[4,9],lw:.55},
+        {r:.42,c:'rgba(58,166,117,.18)',dash:[4,8],lw:.6},
+        {r:BLR,c:'rgba(58,166,117,.55)',dash:[],lw:.9},
+        {r:1.02,c:'rgba(80,150,220,.09)',dash:[4,9],lw:.5}
+      ],
+      notebook:[
+        {r:.3,c:'rgba(58,166,117,.18)',dash:[4,8],lw:.6},
+        {r:.65,c:'rgba(58,166,117,.5)',dash:[],lw:.85},
+        {r:1.0,c:'rgba(58,166,117,.1)',dash:[4,9],lw:.5}
+      ]
+    };
+    (configs[mode]||configs.full).forEach(g=>{
+      const gy=ty+g.r*cH;
+      ctx.save();ctx.strokeStyle=g.c;ctx.lineWidth=g.lw;ctx.setLineDash(g.dash);
+      ctx.beginPath();ctx.moveTo(lx,gy);ctx.lineTo(rx,gy);ctx.stroke();ctx.restore();
+    });
+  },
+
+  renderText(ctx,text,opts){
+    const{
+      scale=1,spacing=1,lineHeight=1.65,slant=0,jitter=.3,pressure=.85,
+      connected=false,connStr=.55,connArc=-.15,connThick=.8,
+      showGuides=false,guideMode='full',
+      inkMode='orig',bgMode='cream',
+      indent=1,PW=794,PX=64,PY=58,
+      seed=0
+    }=opts;
+
+    const cW=Math.round(CW*scale),cH=Math.round(CH*scale);
+    const adv=cW*.60*spacing,spAdv=cW*.30*spacing,lH=cH*lineHeight,maxX=PW-PX;
+
+    const lines=[];
+    text.split('\n').forEach((para,pi)=>{
+      if(!para.trim()){lines.push({toks:[],blank:true});return;}
+      const isFirst=(pi===0)||!text.split('\n')[pi-1].trim();
+      let line=[],lw=isFirst&&indent>0?adv*indent:0;
+      para.split(' ').forEach(word=>{
+        if(!word)return;
+        const ww=[...word].reduce((s,ch,ci)=>{
+          const k=ci<word.length-1?(KERN[ch+word[ci+1]]||0)*cW:0;
+          return s+adv+k;
+        },0)+spAdv;
+        if(lw+ww>maxX-PX&&line.length){
+          lines.push({toks:line,isFirst:false,indent:false,indW:0});
+          line=[];lw=0;
+        }
+        const lineFirst=line.length===0;
+        [...word].forEach((ch,ci)=>{
+          const nch=ci<word.length-1?word[ci+1]:null;
+          const kern=nch?(KERN[ch+nch]||0)*cW:0;
+          line.push({ch,sp:false,kern,indW:isFirst&&lineFirst&&ci===0?adv*indent:0,doInd:isFirst&&lineFirst&&ci===0});
+        });
+        line.push({ch:' ',sp:true,kern:0,indW:0,doInd:false});
+        lw+=ww;
+      });
+      if(line.length)lines.push({toks:line,isFirst,indent:isFirst&&indent>0,indW:adv*indent});
+    });
+
+    const totalH=Math.max(820,PY*2+lines.length*lH+lH*.5);
+    const bgMap={white:'#ffffff',cream:'#f9f6ef',ruled:'#ffffff',grid:'#ffffff',notebook:'#f3f2e5',dark:'#0f1318'};
+    ctx.fillStyle=bgMap[bgMode]||'#f9f6ef';
+    ctx.fillRect(0,0,PW,totalH);
+
+    if(bgMode==='ruled'||bgMode==='notebook'){
+      ctx.strokeStyle=bgMode==='notebook'?'rgba(92,110,200,.2)':'rgba(155,188,215,.55)';
+      ctx.lineWidth=.7;
+      for(let y=PY+cH*BLR;y<totalH-PY;y+=lH){
+        ctx.beginPath();ctx.moveTo(PX-36,y);ctx.lineTo(PW-PX+36,y);ctx.stroke();
+      }
+      if(bgMode==='notebook'){
+        ctx.strokeStyle='rgba(200,95,90,.25)';ctx.lineWidth=1.1;
+        ctx.beginPath();ctx.moveTo(PX+42,0);ctx.lineTo(PX+42,totalH);ctx.stroke();
+      }
+    }else if(bgMode==='grid'){
+      ctx.strokeStyle='rgba(150,180,210,.25)';ctx.lineWidth=.5;
+      const gs=lH*.72;
+      for(let x=PX;x<=PW-PX;x+=gs){ctx.beginPath();ctx.moveTo(x,PY);ctx.lineTo(x,totalH-PY);ctx.stroke();}
+      for(let y=PY;y<=totalH-PY;y+=lH){ctx.beginPath();ctx.moveTo(PX,y);ctx.lineTo(PW-PX,y);ctx.stroke();}
+    }
+
+    const tCache={};
+    lines.forEach((ln,li)=>{
+      if(ln.blank)return;
+      const lineTop=PY+li*lH;
+      if(showGuides)engine.drawGuideMode(ctx,PX-32,PW-PX+32,lineTop,cH,guideMode);
+      let x=PX+(ln.indent?ln.indW||0:0);
+      let pMeta=null,pTop=0,pX=0,pCW=0;
+
+      ln.toks.forEach(({ch,sp,kern,doInd,indW})=>{
+        if(x>=maxX)return;
+        if(sp){x+=spAdv;pMeta=null;return;}
+        const src=cMap[ch]||cMap[ch.toLowerCase()]||cMap[ch.toUpperCase()];
+        if(!src){x+=adv*.38;return;}
+        if(!cMeta[ch])cMeta[ch]=engine.extractMetrics(src);
+        const m=cMeta[ch];
+        const ns=seed+li*3000+x*0.01;
+        const jx=nz2(ns*.009,li*.17)*jitter*4.8;
+        const jy=nz2(ns*.011,li*.22+1)*jitter*2.8;
+        const jrot=nz2(ns*.014,li*.18+2)*jitter*.09;
+        const jscX=1+nz2(ns*.018,li*.15+3)*jitter*.04;
+        const blR=m.bl/(CH*SS);
+        const drawTop=lineTop+cH*BLR-blR*cH+jy;
+        const cx=x+cW/2+jx,cy=drawTop+cH/2;
+
+        if(connected&&pMeta){
+          const ex=pX+(pMeta.ex/(CW*SS))*pCW;
+          const ey=pTop+(pMeta.ey/(CH*SS))*cH;
+          const enx=x+(m.enx/(CW*SS))*cW;
+          const eny=drawTop+(m.eny/(CH*SS))*cH;
+          const dx=enx-ex,dy=eny-ey,dist=Math.sqrt(dx*dx+dy*dy);
+          if(dist>1&&dist<adv*3){
+            const arc=connArc*dist;
+            const nx=-dy/dist,ny=dx/dist;
+            const cp1x=ex+dx*.3+nx*arc,cp1y=ey+dy*.3+ny*arc;
+            const cp2x=enx-dx*.3+nx*arc,cp2y=eny-dy*.3+ny*arc;
+            const inkAlpha=pressure*(0.65+nz(ns*.025,li*.3)*0.25);
+            ctx.save();
+            ctx.strokeStyle=engine.ink(m,inkMode,inkAlpha);
+            ctx.lineWidth=Math.max(.4,cH*.012*connThick);
+            ctx.lineCap='round';ctx.lineJoin='round';
+            ctx.beginPath();ctx.moveTo(ex,ey);
+            ctx.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,enx,eny);
+            ctx.stroke();ctx.restore();
+          }
+        }
+
+        const pres=pressure*(0.78+nz(ns*.028,li*.26+4)*0.22);
+        ctx.save();
+        ctx.translate(cx,cy);
+        if(slant!==0)ctx.transform(1,0,-Math.tan(slant),1,0,0);
+        ctx.rotate(jrot);ctx.scale(jscX,1);
+        if(inkMode==='orig'){
+          ctx.globalAlpha=Math.min(1,pres);
+          ctx.drawImage(src,-cW/2,-cH/2,cW,cH);
+          ctx.globalAlpha=1;
+        }else{
+          const tk=inkMode+'_'+cW+'_'+cH+'_'+ch;
+          if(!tCache[tk])tCache[tk]=engine.tint(src,inkMode,pres,cW,cH);
+          const td=tCache[tk];
+          if(td){ctx.globalAlpha=Math.min(1,pres*.9+.05);ctx.drawImage(td,-cW/2,-cH/2);ctx.globalAlpha=1;}
+          else{ctx.globalAlpha=Math.min(1,pres);ctx.drawImage(src,-cW/2,-cH/2,cW,cH);ctx.globalAlpha=1;}
+        }
+        ctx.restore();
+        pMeta=m;pTop=drawTop;pX=x;pCW=cW;
+        x+=adv+kern;
+      });
+    });
+    return totalH;
+  }
+};
+
+(function buildTemplate(){
+  const c=document.getElementById('tc');
+  c.width=TW;c.height=TH;
+  const ctx=c.getContext('2d');
+  ctx.fillStyle='#fafaf7';ctx.fillRect(0,0,TW,TH);
+  ctx.fillStyle='#383838';ctx.font='bold 11px system-ui,sans-serif';
+  ctx.fillText('МОЙ ПОЧЕРК — напишите каждую букву своим почерком в соответствующую ячейку',MX,36);
   for(let i=0;i<CHARS.length;i++){
-    const col=i%COLS, row=Math.floor(i/COLS);
-    const x=MX+col*SX, y=MY+row*SY;
-    ctx.strokeStyle='#ccc'; ctx.lineWidth=.5; ctx.strokeRect(x+.5,y+.5,CW,CH);
-    ctx.strokeStyle='#ebebeb'; ctx.beginPath(); ctx.moveTo(x+4,y+CH-12); ctx.lineTo(x+CW-4,y+CH-12); ctx.stroke();
-    ctx.fillStyle='#ccc'; ctx.font='8px system-ui,sans-serif';
-    const ch=CHARS[i]; ctx.fillText(ch===' '?'SP':ch, x+3, y+10);
+    const col=i%COLS,row=Math.floor(i/COLS),x=MX+col*SX,y=MY+row*SY;
+    ctx.strokeStyle='#cccccc';ctx.lineWidth=.5;ctx.strokeRect(x+.5,y+.5,CW,CH);
+    const bly=y+Math.round(CH*BLR);
+    ctx.strokeStyle='#e0e0e0';ctx.lineWidth=.5;
+    ctx.beginPath();ctx.moveTo(x+3,bly);ctx.lineTo(x+CW-3,bly);ctx.stroke();
+    const xhl=y+Math.round(CH*.42);
+    ctx.strokeStyle='#eeeeee';ctx.lineWidth=.4;
+    ctx.beginPath();ctx.moveTo(x+3,xhl);ctx.lineTo(x+CW-3,xhl);ctx.stroke();
+    const ch=CHARS[i];
+    ctx.fillStyle='#d0d0d0';ctx.font='7.5px system-ui,sans-serif';
+    ctx.fillText(ch===' '?'SP':ch,x+3,y+10);
+    if(ch!==' '){
+      ctx.fillStyle='rgba(200,200,200,.5)';ctx.font='italic 15px serif';
+      const tw=ctx.measureText(ch).width;
+      ctx.fillText(ch,x+(CW-tw)/2,y+CH-15);
+    }
   }
   [[GX0,GY0],[GX1,GY0],[GX0,GY1],[GX1,GY1]].forEach(([cx,cy])=>{
-    ctx.fillStyle='#d83a2a'; ctx.fillRect(cx-6,cy-6,12,12);
-    ctx.fillStyle='white'; ctx.fillRect(cx-2.5,cy-2.5,5,5);
+    ctx.fillStyle='#d03020';ctx.fillRect(cx-8,cy-8,16,16);
+    ctx.fillStyle='white';ctx.fillRect(cx-3.5,cy-3.5,7,7);
   });
 })();
 
 function printTmpl(){
-  const url=document.getElementById('tc').toDataURL();
-  const w=window.open('');
-  if(!w){alert('Разрешите всплывающие окна');return;}
-  w.document.write('<html><head><style>@page{margin:6mm}body{margin:0}img{width:100%;display:block}</style></head><body><img src="'+url+'"></body></html>');
-  w.document.close(); setTimeout(()=>w.print(),400);
+  const u=document.getElementById('tc').toDataURL('image/png');
+  const w=window.open('');if(!w){alert('Разрешите всплывающие окна');return;}
+  w.document.write('<html><head><style>@page{margin:5mm}body{margin:0}img{width:100%;display:block}</style></head><body><img src="'+u+'"></body></html>');
+  w.document.close();setTimeout(()=>w.print(),400);
 }
 
-// ─── UPLOAD SAMPLE ───
-document.getElementById('hf1').addEventListener('change',e=>{if(e.target.files[0])loadS(e.target.files[0])});
-setupDZ('dz1', f=>loadS(f));
+function go(n){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  document.querySelectorAll('#sbar .sd').forEach((d,i)=>{d.className='sd '+(i<n?'d':i===n?'a':'t')});
+  document.getElementById('snum').textContent=(n+1)+' / 5';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goR(){fTxt=document.getElementById('txin').value;go(4);}
+function stab(n){
+  [0,1].forEach(i=>{
+    document.getElementById('t'+i).className='tab'+(i===n?' on':'');
+    document.getElementById('p'+i).style.display=i===n?'block':'none';
+  });
+}
+function txStat(){
+  const n=document.getElementById('txin').value.length;
+  setSt('txst',n>0?n+' симв.':'','');
+}
+function txStat2(){
+  const n=document.getElementById('otxt').value.length;
+  setSt('otxst',n>0?n+' симв.':'','');
+}
 
-function loadS(file){
+document.getElementById('hf1').addEventListener('change',e=>{if(e.target.files[0])loadS(e.target.files[0])});
+mkDZ('dz1',f=>loadS(f));
+
+function loadS(f){
   const r=new FileReader();
   r.onload=e=>{
     const img=new Image();
-    img.onload=()=>{sImg=img;document.getElementById('dz1lbl').textContent='✓ '+file.name;setupAlign(img);document.getElementById('extbtn').disabled=false;};
+    img.onload=()=>{
+      sImg=img;
+      document.getElementById('dz1l').textContent='✓ '+f.name;
+      document.getElementById('dz1').classList.add('ok');
+      setupAlign(img);
+      document.getElementById('extbtn').disabled=false;
+    };
     img.src=e.target.result;
   };
-  r.readAsDataURL(file);
+  r.readAsDataURL(f);
 }
 
-function setupDZ(id, cb){
+function mkDZ(id,cb){
   const el=document.getElementById(id);
   el.addEventListener('dragover',e=>{e.preventDefault();el.classList.add('drag')});
   el.addEventListener('dragleave',()=>el.classList.remove('drag'));
-  el.addEventListener('drop',e=>{e.preventDefault();el.classList.remove('drag');const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/'))cb(f);});
+  el.addEventListener('drop',e=>{
+    e.preventDefault();el.classList.remove('drag');
+    const f=e.dataTransfer.files[0];
+    if(f&&f.type.startsWith('image/'))cb(f);
+  });
 }
 
 function setupAlign(img){
   document.getElementById('abox').style.display='block';
   const c=document.getElementById('pc');
-  const s=Math.min(620/img.width,1);
-  c.width=Math.round(img.width*s); c.height=Math.round(img.height*s);
+  const s=Math.min(650/img.width,680/img.height,1);
+  c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);
   c.getContext('2d').drawImage(img,0,0,c.width,c.height);
   const dl=document.getElementById('dl');
-  dl.innerHTML=''; dl.style.width=c.width+'px'; dl.style.height=c.height+'px';
-  const corners=[[0,0],[c.width,0],[c.width,c.height],[0,c.height]];
+  dl.innerHTML='';dl.style.width=c.width+'px';dl.style.height=c.height+'px';
+  const cx0=GX0/TW*c.width,cy0=GY0/TH*c.height;
+  const cx1=GX1/TW*c.width,cy1=GY1/TH*c.height;
+  const corners=[[cx0,cy0],[cx1,cy0],[cx1,cy1],[cx0,cy1]];
   cDots=corners.map(([x,y])=>({x,y}));
   corners.forEach(([ix,iy],idx)=>{
-    const d=document.createElement('div');
-    d.className='corner-dot'; d.style.left=ix+'px'; d.style.top=iy+'px';
+    const d=document.createElement('div');d.className='cdot';
+    d.style.left=ix+'px';d.style.top=iy+'px';
     d.title=['↖ Верх-лево','↗ Верх-право','↘ Низ-право','↙ Низ-лево'][idx];
     let ox,oy,ol,ot;
-    d.addEventListener('pointerdown',e=>{e.preventDefault();ox=e.clientX;oy=e.clientY;ol=parseInt(d.style.left)||0;ot=parseInt(d.style.top)||0;d.setPointerCapture(e.pointerId)});
-    d.addEventListener('pointermove',e=>{if(!e.buttons)return;const nl=ol+(e.clientX-ox),nt=ot+(e.clientY-oy);d.style.left=nl+'px';d.style.top=nt+'px';cDots[idx]={x:nl,y:nt}});
+    d.addEventListener('pointerdown',e=>{
+      e.preventDefault();ox=e.clientX;oy=e.clientY;
+      ol=parseFloat(d.style.left)||0;ot=parseFloat(d.style.top)||0;
+      d.setPointerCapture(e.pointerId);
+    });
+    d.addEventListener('pointermove',e=>{
+      if(!e.buttons)return;
+      const nl=ol+(e.clientX-ox),nt=ot+(e.clientY-oy);
+      d.style.left=nl+'px';d.style.top=nt+'px';cDots[idx]={x:nl,y:nt};
+    });
     dl.appendChild(d);
   });
 }
 
-// ─── HOMOGRAPHY ───
 function gaussSolve(A,b){
   const n=b.length,M=A.map((r,i)=>[...r,b[i]]);
   for(let c=0;c<n;c++){
-    let mx=c;for(let r=c+1;r<n;r++)if(Math.abs(M[r][c])>Math.abs(M[mx][c]))mx=r;
+    let mx=c;
+    for(let r=c+1;r<n;r++)if(Math.abs(M[r][c])>Math.abs(M[mx][c]))mx=r;
     [M[c],M[mx]]=[M[mx],M[c]];
     if(Math.abs(M[c][c])<1e-12)continue;
-    const f=M[c][c];for(let j=c;j<=n;j++)M[c][j]/=f;
+    const fv=M[c][c];for(let j=c;j<=n;j++)M[c][j]/=fv;
     for(let r=0;r<n;r++)if(r!==c){const fc=M[r][c];for(let j=c;j<=n;j++)M[r][j]-=fc*M[c][j];}
   }
   return M.map(r=>r[n]);
 }
 function computeH(src,dst){
   const A=[],b=[];
-  for(let i=0;i<4;i++){const[x,y]=src[i],[u,v]=dst[i];A.push([-x,-y,-1,0,0,0,x*u,y*u]);b.push(-u);A.push([0,0,0,-x,-y,-1,x*v,y*v]);b.push(-v);}
+  for(let i=0;i<4;i++){
+    const[x,y]=src[i],[u,v]=dst[i];
+    A.push([-x,-y,-1,0,0,0,x*u,y*u]);b.push(-u);
+    A.push([0,0,0,-x,-y,-1,x*v,y*v]);b.push(-v);
+  }
   return gaussSolve(A,b);
 }
 function warp(h,x,y){const d=h[6]*x+h[7]*y+1;return[(h[0]*x+h[1]*y+h[2])/d,(h[3]*x+h[4]*y+h[5])/d]}
 
-// ─── EXTRACT ───
 function doExtract(){
   if(!sImg)return;
   const btn=document.getElementById('extbtn');
-  btn.disabled=true; btn.textContent='Извлекаю...';
-  setSt('exst','Обрабатываю...','');
+  btn.disabled=true;btn.innerHTML='<span class="spin"></span>Извлекаю…';
+  setSt('exst','','');
   setTimeout(()=>{
     try{
-      const pc=document.getElementById('pc');
-      const sc=sImg.width/pc.width;
-      const H=computeH([[GX0,GY0],[GX1,GY0],[GX1,GY1],[GX0,GY1]], cDots.map(({x,y})=>[x*sc,y*sc]));
+      const pc=document.getElementById('pc'),sc=sImg.width/pc.width;
+      const H=computeH(
+        [[GX0,GY0],[GX1,GY0],[GX1,GY1],[GX0,GY1]],
+        cDots.map(({x,y})=>[x*sc,y*sc])
+      );
       const oc=document.createElement('canvas');oc.width=sImg.width;oc.height=sImg.height;
       oc.getContext('2d').drawImage(sImg,0,0);
       const id=oc.getContext('2d').getImageData(0,0,oc.width,oc.height);
-      charMap={};
+      cMap={};cMeta={};
       const grid=document.getElementById('cgrid');grid.innerHTML='';
       for(let i=0;i<CHARS.length;i++){
-        const col=i%COLS,row=Math.floor(i/COLS);
-        const cx=MX+col*SX,cy=MY+row*SY,ch=CHARS[i];
-        const cell=extractCell(id,oc.width,oc.height,H,cx,cy,CW,CH);
-        charMap[ch]=cell;
-        const wrap=document.createElement('div');wrap.className='ct';
-        cell.style.width='30px';cell.style.height='34px';wrap.appendChild(cell);
+        const col=i%COLS,row=Math.floor(i/COLS),ch=CHARS[i];
+        const cell=extractCell(id,oc.width,oc.height,H,MX+col*SX,MY+row*SY,CW,CH);
+        cMap[ch]=cell;
+        const wrap=document.createElement('div');wrap.className='ct ok';
+        const cv=document.createElement('canvas');
+        cv.width=cell.width;cv.height=cell.height;
+        cv.style.width='26px';cv.style.height='30px';
+        cv.getContext('2d').drawImage(cell,0,0);
+        wrap.appendChild(cv);
         const lbl=document.createElement('span');lbl.textContent=ch===' '?'SP':ch;wrap.appendChild(lbl);
+        wrap.addEventListener('click',()=>showBig(ch,cell));
         grid.appendChild(wrap);
       }
-      setSt('exst','✓ '+CHARS.length+' символов','ok');
-      btn.textContent='Извлечь буквы →'; btn.disabled=false;
+      setSt('exst','✓ '+CHARS.length+' символов извлечено','ok');
+      btn.textContent='Извлечь символы →';btn.disabled=false;
       go(2);
-    }catch(e){setSt('exst','Ошибка: '+e.message,'err');btn.textContent='Извлечь буквы →';btn.disabled=false;}
+    }catch(e){
+      setSt('exst','Ошибка: '+e.message,'er');
+      btn.textContent='Извлечь символы →';btn.disabled=false;
+    }
   },60);
 }
 
 function extractCell(id,iw,ih,H,cx,cy,cw,ch){
-  const S=2,ow=cw*S,oh=ch*S,out=new Uint8ClampedArray(ow*oh*4);
-  let br=0,bg=0,bb=0,cnt=0;
-  [[cx+3,cy+3],[cx+cw-4,cy+3],[cx+3,cy+ch-4],[cx+cw-4,cy+ch-4]].forEach(([tx,ty])=>{
-    const[px,py]=warp(H,tx,ty);const ix=Math.round(px),iy=Math.round(py);
-    if(ix>=0&&ix<iw&&iy>=0&&iy<ih){const si=(iy*iw+ix)*4;br+=id.data[si];bg+=id.data[si+1];bb+=id.data[si+2];cnt++;}
-  });
-  if(cnt){br/=cnt;bg/=cnt;bb/=cnt;}else{br=bg=bb=245;}
-  for(let oy=0;oy<oh;oy++)for(let ox=0;ox<ow;ox++){
-    const[px,py]=warp(H,cx+ox/S,cy+oy/S);
-    const ix=Math.round(px),iy=Math.round(py),di=(oy*ow+ox)*4;
+  const ow=cw*SS,oh=ch*SS,out=new Uint8ClampedArray(ow*oh*4);
+  const spts=[[cx+5,cy+5],[cx+cw-6,cy+5],[cx+5,cy+ch-6],[cx+cw-6,cy+ch-6],
+              [cx+cw/2,cy+5],[cx+5,cy+ch/2],[cx+cw-6,cy+ch/2],[cx+cw/2,cy+ch-6]];
+  let br=0,bg2=0,bb=0,cnt=0;
+  spts.forEach(([tx,ty])=>{
+    const[px,py]=warp(H,tx,ty),ix=Math.round(px)|0,iy=Math.round(py)|0;
     if(ix>=0&&ix<iw&&iy>=0&&iy<ih){
-      const si=(iy*iw+ix)*4;
-      const r=id.data[si],g=id.data[si+1],b=id.data[si+2];
-      const diff=Math.sqrt((r-br)**2+(g-bg)**2+(b-bb)**2);
-      out[di]=r;out[di+1]=g;out[di+2]=b;out[di+3]=Math.min(255,diff*5.5);
+      const si=(iy*iw+ix)*4;br+=id.data[si];bg2+=id.data[si+1];bb+=id.data[si+2];cnt++;
+    }
+  });
+  if(cnt){br/=cnt;bg2/=cnt;bb/=cnt;}else{br=bg2=bb=242;}
+  const bgLum=(br+bg2+bb)/3;
+  for(let oy=0;oy<oh;oy++){
+    for(let ox=0;ox<ow;ox++){
+      const[px,py]=warp(H,cx+ox/SS,cy+oy/SS);
+      const ix=Math.round(px)|0,iy=Math.round(py)|0;
+      const di=(oy*ow+ox)*4;
+      if(ix>=0&&ix<iw&&iy>=0&&iy<ih){
+        const si=(iy*iw+ix)*4;
+        const r=id.data[si],g=id.data[si+1],b=id.data[si+2];
+        const lum=(r*.299+g*.587+b*.114);
+        const diff=bgLum-lum;
+        const alpha=diff>0?Math.min(255,Math.pow(diff/65,1.2)*255):0;
+        out[di]=r;out[di+1]=g;out[di+2]=b;out[di+3]=alpha|0;
+      }
     }
   }
   const c=document.createElement('canvas');c.width=ow;c.height=oh;
@@ -418,154 +866,251 @@ function extractCell(id,iw,ih,H,cx,cy,cw,ch){
   return c;
 }
 
-// ─── OCR ───
-function saveKey(){const k=document.getElementById('apikey').value.trim();if(k){localStorage.setItem('ak',k);alert('Ключ сохранён');}}
-(function(){const k=localStorage.getItem('ak');if(k)document.getElementById('apikey').value=k;})();
+function showBig(ch,cell){
+  const cv=document.getElementById('bigc');
+  const S=3,w=cell.width*S/SS,h=cell.height*S/SS;
+  cv.width=Math.round(w);cv.height=Math.round(h);
+  cv.style.maxWidth='180px';cv.style.maxHeight='210px';
+  const ctx=cv.getContext('2d');
+  ctx.fillStyle='#1a2636';ctx.fillRect(0,0,cv.width,cv.height);
+  const blY=Math.round(h*BLR);
+  ctx.strokeStyle='rgba(58,166,117,.6)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(0,blY);ctx.lineTo(cv.width,blY);ctx.stroke();
+  ctx.strokeStyle='rgba(58,166,117,.2)';ctx.lineWidth=.8;
+  const xhY=Math.round(h*.42);
+  ctx.beginPath();ctx.moveTo(0,xhY);ctx.lineTo(cv.width,xhY);ctx.stroke();
+  ctx.drawImage(cell,0,0,cv.width,cv.height);
+  document.getElementById('bigprev').style.display='block';
+  document.getElementById('biglbl').textContent=(ch===' '?'пробел (SP)':'"'+ch+'"')+' — нажмите другой символ';
+  if(!cMeta[ch])cMeta[ch]=engine.extractMetrics(cell);
+  const m=cMeta[ch];
+  const mr=document.getElementById('metrow');
+  mr.innerHTML='';
+  [
+    ['bl',Math.round(m.bl/SS*3/h*100)+'%'],
+    ['xh',Math.round(m.xh/SS*3/h*100)+'%'],
+    ['x0',m.x0/SS|0],['x1',m.x1/SS|0],
+    ['adv',m.advance.toFixed(1)],
+    ['ink',`rgb(${m.ir},${m.ig},${m.ib})`]
+  ].forEach(([k,v])=>{
+    const d=document.createElement('div');d.className='met';
+    d.innerHTML=`${k}: <b>${v}</b>`;mr.appendChild(d);
+  });
+}
 
-document.getElementById('hf2').addEventListener('change',e=>{if(e.target.files[0])loadOCR(e.target.files[0])});
-setupDZ('dz2',f=>loadOCR(f));
+function syncLb(){
+  const fv=id=>parseFloat(document.getElementById(id).value);
+  document.getElementById('szlb').textContent=fv('szsl').toFixed(2)+'×';
+  document.getElementById('splb').textContent=fv('spsl').toFixed(2)+'×';
+  document.getElementById('lhlb').textContent=fv('lhsl').toFixed(2)+'×';
+  const sl=fv('slsl');
+  document.getElementById('sllb').textContent=(sl*57.3).toFixed(0)+'°';
+  document.getElementById('jtlb').textContent=fv('jtsl').toFixed(2);
+  document.getElementById('prlb').textContent=fv('prsl').toFixed(2);
+  document.getElementById('cslb').textContent=fv('cssl').toFixed(2);
+  document.getElementById('calb').textContent=fv('casl').toFixed(2);
+  document.getElementById('ctlb').textContent=fv('ctsl').toFixed(2);
+}
 
-function loadOCR(file){
-  ocrType=file.type||'image/jpeg';
+function togConn(){
+  const on=document.getElementById('ctog').checked;
+  document.getElementById('clb').textContent=on?'Вкл':'Выкл';
+  ['cw1','cw2','cw3'].forEach(id=>{
+    const el=document.getElementById(id);el.style.opacity=on?'1':'.3';el.style.pointerEvents=on?'auto':'none';
+  });
+}
+function togGuide(){document.getElementById('glb').textContent=document.getElementById('gtog').checked?'Вкл':'Выкл';}
+
+function getOpts(){
+  const fv=id=>parseFloat(document.getElementById(id).value);
+  const gv=id=>document.getElementById(id).value;
+  const cb=id=>document.getElementById(id).checked;
+  return{
+    scale:fv('szsl'),spacing:fv('spsl'),lineHeight:fv('lhsl'),slant:fv('slsl'),
+    jitter:fv('jtsl'),pressure:fv('prsl'),
+    connected:cb('ctog'),connStr:fv('cssl'),connArc:fv('casl'),connThick:fv('ctsl'),
+    showGuides:cb('gtog'),guideMode:gv('grsl'),
+    bgMode:gv('bgsl'),inkMode:gv('iksl'),
+    indent:parseInt(gv('indsl')),
+    PW:parseInt(gv('pwsl')),PX:parseInt(gv('msl')),PY:parseInt(gv('msl')),
+    seed:++lastSeed
+  };
+}
+
+function lr(){
+  if(document.getElementById('rbox').style.display==='none')return;
+  clearTimeout(rTimer);
+  document.getElementById('pbox').classList.add('loading');
+  rTimer=setTimeout(()=>{
+    renderInner(true);
+    document.getElementById('pbox').classList.remove('loading');
+  },320);
+}
+
+function doRender(){
+  const text=(document.getElementById('txin').value||fTxt).trim();
+  if(!text){setSt('rnds','Введите текст','wa');return;}
+  setSt('rnds','','');
+  document.getElementById('rndbtn').disabled=true;
+  document.getElementById('rndbtn').innerHTML='<span class="spin"></span>Рендерю…';
+  requestAnimationFrame(()=>{
+    setTimeout(()=>{
+      renderInner(false);
+      document.getElementById('rndbtn').textContent='Создать рукопись';
+      document.getElementById('rndbtn').disabled=false;
+    },0);
+  });
+}
+
+function renderInner(fast){
+  const text=(document.getElementById('txin').value||fTxt).trim();
+  if(!text)return;
+  const opts=getOpts();
+  const c=document.getElementById('outc');
+  c.width=opts.PW;c.height=lastH;
+  const ctx=c.getContext('2d');
+  const h=engine.renderText(ctx,text,opts);
+  if(h!==lastH){
+    lastH=h;c.height=h;
+    engine.renderText(c.getContext('2d'),text,opts);
+  }
+  document.getElementById('rbox').style.display='block';
+  const charCount=Object.keys(cMap).length;
+  const lines=text.split('\n').filter(l=>l.trim()).length;
+  document.getElementById('rstat').textContent=`${h}px · ${lines} строк · ${charCount} символов в шрифте`;
+  if(!fast)setTimeout(()=>document.getElementById('rbox').scrollIntoView({behavior:'smooth',block:'start'}),80);
+}
+
+function saveKey(){
+  const k=document.getElementById('akey').value.trim();
+  if(k){localStorage.setItem('ak',k);setSt('ost','✓ Ключ сохранён','ok');setTimeout(()=>setSt('ost','',''),2500);}
+}
+(()=>{const k=localStorage.getItem('ak');if(k)document.getElementById('akey').value=k;})();
+
+document.getElementById('hf2').addEventListener('change',e=>{if(e.target.files[0])loadOI(e.target.files[0])});
+mkDZ('dz2',f=>loadOI(f));
+
+function loadOI(f){
+  oType=f.type||'image/jpeg';
   const r=new FileReader();
   r.onload=e=>{
-    ocrB64=e.target.result.split(',')[1];
-    document.getElementById('dz2lbl').textContent='✓ '+file.name;
-    document.getElementById('ocrimg').src=e.target.result;
-    document.getElementById('ocrpreview').style.display='block';
-    document.getElementById('ocrback').style.display='none';
+    oB64=e.target.result.split(',')[1];
+    document.getElementById('dz2l').textContent='✓ '+f.name;
+    document.getElementById('dz2').classList.add('ok');
+    document.getElementById('oimg').src=e.target.result;
+    document.getElementById('opv').style.display='block';
   };
-  r.readAsDataURL(file);
+  r.readAsDataURL(f);
 }
 
 async function doOCR(){
-  const key=(document.getElementById('apikey').value||localStorage.getItem('ak')||'').trim();
-  if(!key){setSt('ocrst','Введите API-ключ','err');return;}
-  if(!ocrB64){setSt('ocrst','Загрузите фото лекции','err');return;}
-  const btn=document.getElementById('ocrbtn');
-  btn.disabled=true;btn.textContent='Распознаю...';setSt('ocrst','Отправляю в Claude...','');
+  const key=(document.getElementById('akey').value||localStorage.getItem('ak')||'').trim();
+  if(!key){setSt('ost','Введите API-ключ','er');return;}
+  if(!oB64){setSt('ost','Загрузите фото лекции','er');return;}
+  const btn=document.getElementById('obtn');
+  btn.disabled=true;btn.innerHTML='<span class="spin"></span>Распознаю…';
+  setSt('ost','Отправляю фото в Claude Vision…','lo');
   try{
     const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01'},
-      body:JSON.stringify({model:'claude-opus-4-5',max_tokens:2000,messages:[{role:'user',content:[
-        {type:'image',source:{type:'base64',media_type:ocrType,data:ocrB64}},
-        {type:'text',text:'Распознай весь текст с этого фото лекции максимально точно. Сохрани абзацы, заголовки и структуру. Верни ТОЛЬКО текст без комментариев.'}
-      ]}]})
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':key,
+        'anthropic-version':'2023-06-01'
+      },
+      body:JSON.stringify({
+        model:'claude-sonnet-4-5',
+        max_tokens:4000,
+        messages:[{role:'user',content:[
+          {type:'image',source:{type:'base64',media_type:oType,data:oB64}},
+          {type:'text',text:'Распознай весь текст с этого фото лекции максимально точно. Сохрани структуру: абзацы, заголовки, нумерацию. Верни ТОЛЬКО текст, без пояснений и комментариев.'}
+        ]}]
+      })
     });
     const data=await res.json();
     if(data.error)throw new Error(data.error.message);
-    const text=(data.content||[]).map(b=>b.text||'').join('');
-    if(!text.trim())throw new Error('Текст не найден');
-    document.getElementById('ocrtxt').value=text;
-    document.getElementById('ocrresult').style.display='block';
-    document.getElementById('ocrback').style.display='none';
-    setSt('ocrst','✓ Готово','ok');
-  }catch(e){setSt('ocrst','Ошибка: '+e.message,'err');}
-  finally{btn.disabled=false;btn.textContent='Распознать текст';}
-}
-
-function useOCR(){finalText=document.getElementById('ocrtxt').value;document.getElementById('txtin').value=finalText;go(4);}
-
-// ─── CONTROLS ───
-document.getElementById('szsl').addEventListener('input',e=>{document.getElementById('szlbl').textContent=parseFloat(e.target.value).toFixed(1)+'×'});
-document.getElementById('spsl').addEventListener('input',e=>{document.getElementById('splbl').textContent=parseFloat(e.target.value).toFixed(2)+'×'});
-document.getElementById('jitsl').addEventListener('input',e=>{const v=parseFloat(e.target.value);document.getElementById('jitlbl').textContent=v<.03?'нет':v<.07?'мало':v<.11?'средний':'много'});
-
-// ─── RENDER ───
-function doRender(){
-  const text=(document.getElementById('txtin').value||finalText).trim();
-  if(!text){alert('Введите текст');return;}
-  const scale=parseFloat(document.getElementById('szsl').value);
-  const spacing=parseFloat(document.getElementById('spsl').value);
-  const jit=parseFloat(document.getElementById('jitsl').value);
-  const bgM=document.getElementById('bgsel').value;
-  const ink=document.getElementById('inksel').value;
-
-  const cW=Math.round(CW*scale), cH=Math.round(CH*scale);
-  const adv=cW*.63*spacing, spAdv=cW*.37*spacing;
-  const PW=794,PX=64,PY=56,lH=cH*1.52,maxX=PW-PX;
-
-  // Wrap
-  const lines=[];
-  text.split('\n').forEach(para=>{
-    if(!para.trim()){lines.push('');return;}
-    let line='',lw=0;
-    para.split(' ').forEach(w=>{
-      const ww=([...w].length)*adv+spAdv;
-      if(lw+ww>maxX-PX&&line){lines.push(line.trimEnd());line=w+' ';lw=ww;}
-      else{line+=w+' ';lw+=ww;}
-    });
-    if(line.trim())lines.push(line.trimEnd());
-  });
-
-  const outH=Math.max(700,PY*2+lines.length*lH+lH);
-  const c=document.getElementById('outc');c.width=PW;c.height=outH;
-  const ctx=c.getContext('2d');
-
-  // BG
-  const bgC={w:'#ffffff',r:'#ffffff',g:'#ffffff',y:'#fffde7'};
-  ctx.fillStyle=bgC[bgM]||'#fff'; ctx.fillRect(0,0,PW,outH);
-
-  if(bgM==='r'||bgM==='y'){
-    ctx.strokeStyle=bgM==='y'?'#e0c840':'#b0ccdf'; ctx.lineWidth=.6;
-    for(let y=PY+cH*.86;y<outH-PY;y+=lH){ctx.beginPath();ctx.moveTo(PX-24,y);ctx.lineTo(PW-PX+24,y);ctx.stroke();}
-    ctx.strokeStyle=bgM==='y'?'#f08060':'#f0a0a0'; ctx.lineWidth=.7;
-    ctx.beginPath();ctx.moveTo(PX+32,0);ctx.lineTo(PX+32,outH);ctx.stroke();
-  } else if(bgM==='g'){
-    ctx.strokeStyle='#c0d8ee'; ctx.lineWidth=.5;
-    const gs=lH*.7;
-    for(let x=PX;x<=PW-PX;x+=gs){ctx.beginPath();ctx.moveTo(x,PY);ctx.lineTo(x,outH-PY);ctx.stroke();}
-    for(let y=PY;y<=outH-PY;y+=lH){ctx.beginPath();ctx.moveTo(PX,y);ctx.lineTo(PW-PX,y);ctx.stroke();}
+    const txt=(data.content||[]).map(b=>b.text||'').join('');
+    if(!txt.trim())throw new Error('Текст на изображении не найден');
+    document.getElementById('otxt').value=txt;
+    document.getElementById('ores').style.display='block';
+    document.getElementById('oback').style.display='none';
+    setSt('ost','✓ Распознано · '+txt.length+' символов','ok');
+    txStat2();
+  }catch(e){
+    setSt('ost','Ошибка: '+e.message,'er');
+  }finally{
+    btn.disabled=false;btn.textContent='Распознать текст';
   }
+}
 
-  // Draw
-  lines.forEach((line,li)=>{
-    if(!line)return;
-    let x=PX; const y=PY+li*lH;
-    for(const ch of line){
-      if(x>=maxX)break;
-      if(ch===' '){x+=spAdv;continue;}
-      const src=charMap[ch]||charMap[ch.toLowerCase()]||charMap[ch.toUpperCase()];
-      if(!src){x+=adv*.4;continue;}
-      const jx=(Math.random()-.5)*3,jy=(Math.random()-.5)*4,rot=(Math.random()-.5)*jit;
-      ctx.save();
-      ctx.translate(x+cW/2+jx,y+cH/2+jy);
-      ctx.rotate(rot);
-      if(ink==='orig'){
-        ctx.drawImage(src,-cW/2,-cH/2,cW,cH);
-      } else {
-        const off=document.createElement('canvas');off.width=cW;off.height=cH;
-        const oc2=off.getContext('2d');
-        oc2.drawImage(src,0,0,cW,cH);
-        oc2.globalCompositeOperation='source-atop';
-        oc2.fillStyle=ink==='blue'?'rgba(20,50,190,.88)':'rgba(8,8,8,.92)';
-        oc2.fillRect(0,0,cW,cH);
-        ctx.drawImage(off,-cW/2,-cH/2);
-      }
-      ctx.restore();
-      x+=adv;
-    }
+function useOCR(){
+  fTxt=document.getElementById('otxt').value;
+  document.getElementById('txin').value=fTxt;
+  txStat();go(4);
+}
+
+function xPNG(){
+  setSt('rnds','Готовлю PNG…','lo');
+  requestAnimationFrame(()=>{
+    const a=document.createElement('a');
+    a.href=document.getElementById('outc').toDataURL('image/png');
+    a.download='pocherk.png';a.click();
+    setSt('rnds','','');
   });
-
-  document.getElementById('rbox').style.display='block';
-  setTimeout(()=>document.getElementById('rbox').scrollIntoView({behavior:'smooth'}),80);
 }
 
-function doPrint(){
-  const url=document.getElementById('outc').toDataURL('image/png');
-  const w=window.open('');if(!w){alert('Разрешите всплывающие окна');return;}
-  w.document.write('<html><head><style>@page{margin:10mm}body{margin:0}img{width:100%;display:block}</style></head><body><img src="'+url+'"></body></html>');
-  w.document.close();setTimeout(()=>w.print(),600);
+function xLong(){
+  setSt('rnds','Готовлю PNG…','lo');
+  const c=document.getElementById('outc');
+  requestAnimationFrame(()=>{
+    const a=document.createElement('a');
+    a.href=c.toDataURL('image/png');
+    a.download='pocherk_full_'+c.width+'x'+c.height+'.png';a.click();
+    setSt('rnds','','');
+  });
 }
 
-function doDownload(){
-  const a=document.createElement('a');
-  a.href=document.getElementById('outc').toDataURL('image/png');
-  a.download='moy_pocherk.png';a.click();
+function xPDF(){
+  if(!window.jspdf){setSt('rnds','jsPDF не загружен','er');return;}
+  setSt('rnds','Генерирую PDF…','lo');
+  const cv=document.getElementById('outc');
+  requestAnimationFrame(()=>{
+    try{
+      const{jsPDF}=window.jspdf;
+      const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+      const pw=pdf.internal.pageSize.getWidth();
+      const ph=pdf.internal.pageSize.getHeight();
+      const imgH=pw*(cv.height/cv.width);
+      const img=cv.toDataURL('image/jpeg',.93);
+      let offset=0;
+      while(offset<imgH-0.5){
+        if(offset>0)pdf.addPage();
+        pdf.addImage(img,'JPEG',0,-offset,pw,imgH,undefined,'FAST');
+        offset+=ph;
+      }
+      pdf.save('pocherk.pdf');
+      setSt('rnds','✓ PDF сохранён','ok');
+      setTimeout(()=>setSt('rnds','',''),3000);
+    }catch(e){setSt('rnds','Ошибка PDF: '+e.message,'er');}
+  });
 }
 
-function setSt(id,msg,cls){const el=document.getElementById(id);el.textContent=msg;el.className='status'+(cls?' '+cls:'');}
+function xPrint(){
+  const u=document.getElementById('outc').toDataURL('image/png');
+  const w=window.open('');
+  if(!w){alert('Разрешите всплывающие окна в браузере');return;}
+  w.document.write('<html><head><style>@page{margin:0}body{margin:0;padding:0}img{width:100vw;display:block}</style></head><body><img src="'+u+'"></body></html>');
+  w.document.close();setTimeout(()=>w.print(),700);
+}
+
+function setSt(id,msg,cls){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.textContent=msg;
+  el.className='sta'+(cls?' '+cls:'');
+}
+
+syncLb();
 </script>
 </body>
 </html>
